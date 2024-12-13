@@ -1,0 +1,59 @@
+[package]
+name = "Discord_Bot_Relay"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+tokio = { version = "1.25.1", features = ["rt-multi-thread", "macros", "net"] } # for async runtime
+futures-util = { version = "0.3.13", default-features = false } # for async in general
+poise_macros = "0.6.1" # remember to update the version on changes!
+poise = "0.6.1"
+async-trait = { version = "0.1.48", default-features = false } # various traits
+regex = { version = "1.6.0", default-features = false, features = ["std"] } # prefix
+tracing = { version = "0.1.40", features = ["log"] } # warning about weird state
+derivative = "2.2.0"
+parking_lot = "0.12.1"
+trim-in-place = "0.1.7"
+indexmap = "2.2.6"
+tokio-tungstenite = "0.20"
+url = "2.4"
+dotenv = "0.15"
+serde = { version = "1.0.130", features = ["derive"] }
+serde_json = "1.0.68"
+env_logger = "0.10.1"
+actix-web = "4.0"
+actix-files = "0.6"
+thiserror = "1.0"
+
+[dependencies.serenity]
+default-features = false
+features = ["builder", "client", "gateway", "model", "utils", "collector", "framework"]
+version = "0.12.4"
+
+[dev-dependencies]
+# For the examples
+tokio = { version = "1.25.1", features = ["rt-multi-thread"] }
+futures = { version = "0.3.13", default-features = false }
+fluent = "0.16.0"
+intl-memoizer = "0.5.1"
+fluent-syntax = "0.11"
+rand = "0.8.5"
+
+[features]
+default = ["serenity/rustls_backend", "cache", "chrono", "handle_panics"]
+chrono = ["serenity/chrono"]
+cache = ["serenity/cache"]
+# No-op feature because serenity/collector is now enabled by default
+collector = []
+# Enables support for handling panics inside commands via FrameworkError::CommandPanic.
+# This feature has no overhead and can always be enabled.
+# This feature exists because some users want to disable the mere possibility of catching panics at
+# build time for peace of mind.
+handle_panics = []
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ["cfg(doc_nightly)"] }
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "doc_nightly"]
